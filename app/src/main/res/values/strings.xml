@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Riyadh</string>
+
+
+<!--    Event names-->
+    <string name="dynamo_magic_show">Dynamo Magic Show</string>
+    <string name="the_wizard_of_oz_show">The Wizard of Oz Show </string>
+    <string name="real_madrid_expo">Real Madrid Expo</string>
+    <string name="the_master_of_illusions">The Master of Illusions</string>
+
+</resources>
