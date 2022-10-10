@@ -4,4 +4,9 @@
         <item>@string/english</item>
         <item>@string/hindi</item>
     </string-array>
+
+    <string-array name="language_code">
+        <item>en</item>
+        <item>hi</item>
+    </string-array>
 </resources>

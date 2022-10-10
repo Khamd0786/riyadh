@@ -70,6 +70,9 @@ class HomeFragment : Fragment(), TabAdapter.SelectListener {
 
     }
 
+    /**
+     * Initializing one time object
+     */
     private fun init() {
         tabAdapter = TabAdapter(this)
         eventAdapter = EventAdapter(requireContext())
@@ -84,8 +87,8 @@ class HomeFragment : Fragment(), TabAdapter.SelectListener {
         binding.recycler.layoutManager = GridLayoutManager(context, 2)
         binding.recycler.adapter = eventAdapter
 
-        lifecycleScope.launchWhenCreated {
-            delay(200)
+        lifecycleScope.launchWhenCreated { //initial fetch
+            delay(200) //delay for nothing :)
             viewModel.loadEventsData("")
             viewModel.loadTabData()
         }
@@ -95,33 +98,26 @@ class HomeFragment : Fragment(), TabAdapter.SelectListener {
     private fun bindListener() {
         binding.header.back.setOnClickListener { activity?.finish() }
         binding.header.ivSettings.setOnClickListener {
-
-//            val context = LocaleHelper.setLocale(
-//                activity?.baseContext ?: return@setOnClickListener, "en"
-//            )
-
             chooseLanguage()
-
-//            updateLangChange(context)
-
         }
     }
 
+    /**
+     * It will create a language chooser dialog,
+     * which help the user to select the language.
+     */
     private fun chooseLanguage() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(mBaseContext.getString(R.string.choose_language))
             .setItems(
                 mBaseContext.resources.getStringArray(R.array.language_array)
             ) { dialog, i ->
-                mBaseContext = when (i) {
-                    0 -> {
-                        LocaleHelper.setLocale(activity?.baseContext ?: return@setItems, "en")
-                    }
-                    else -> {
-                        LocaleHelper.setLocale(activity?.baseContext ?: return@setItems, "hi")
-                    }
-                }
-                updateLangChange(mBaseContext)
+                mBaseContext = LocaleHelper.setLocale(
+                    activity?.baseContext ?: return@setItems,
+                    resources.getStringArray(R.array.language_code)[i]
+                )
+
+                updateLangChange()
                 dialog.dismiss()
             }
         builder.create()
@@ -131,35 +127,28 @@ class HomeFragment : Fragment(), TabAdapter.SelectListener {
     @UiThread
     private fun scrollToTop() {
         lifecycleScope.launchWhenCreated {
-            delay(500)
+            delay(500) //delay for nothing :)
             binding.recycler.smoothScrollToPosition(0)
         }
     }
 
     @UiThread
-    private fun updateLangChange(context: Context) {
-        eventAdapter = EventAdapter(context)
-        binding.recycler.adapter = eventAdapter
-
-        viewModel.loadEventsData("") //load data again
-        viewModel.loadTabData()
-
-        binding.tvHeading.text = context.resources.getString(R.string.upcoming_events)
-        binding.tvHeading2.text = context.resources.getString(R.string.today_events)
+    private fun updateLangChange() {
+        eventAdapter.setContent(mBaseContext)
+        binding.tvHeading.text = mBaseContext.resources.getString(R.string.upcoming_events)
+        binding.tvHeading2.text = mBaseContext.resources.getString(R.string.today_events)
 
     }
 
     private fun bindObserver() {
         lifecycleScope.launchWhenCreated {
             viewModel.eventsShareFlow.collectLatest {
-                Log.d("TAG", "bindObserver: $it")
                 eventAdapter.submitList(it)
             }
         }
 
         lifecycleScope.launchWhenCreated {
             viewModel.tabShareFlow.collectLatest {
-                Log.d("TAG", "bindObserver: $it")
                 tabAdapter.submitList(it)
             }
         }

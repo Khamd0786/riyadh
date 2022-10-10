@@ -1,7 +1,6 @@
 package com.hammad.riyadh.helper
 
 import android.annotation.TargetApi
-import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Configuration
@@ -11,30 +10,25 @@ import android.os.LocaleList
 import com.hammad.riyadh.RiyadhApp
 import java.util.*
 
-
+/**
+ * [LocaleHelper] is class which provide some method,
+ * which help to easily change or update the language
+ */
 object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
     private val preferences by lazy { RiyadhApp.get().mPrefs }
 
-    fun onAttach(context: Context): Context? {
-        val lang = getPersistedData(Locale.getDefault().language)
-        if (lang.isNullOrEmpty())
-            return null
-        return setLocale(context, lang)
-    }
-
-    fun onAttach(context: Context, defaultLanguage: String): Context? {
-        val lang = getPersistedData(defaultLanguage)
-        if (lang.isNullOrEmpty())
-            return null
-        return setLocale(context, lang)
-    }
-
+    /**
+     * Provide default save language
+     */
     fun getLanguage(): String? {
         return getPersistedData(Locale.getDefault().language)
     }
 
+    /**
+     * Save the locale language and provide the context through which we can easily access the resource file
+     */
     fun setLocale(context: Context, language: String): Context {
         persist(language)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -42,8 +36,9 @@ object LocaleHelper {
         } else updateResourcesLegacy(context, language)
     }
 
+
     private fun getPersistedData(defaultLanguage: String): String? {
-        return preferences.getString(SELECTED_LANGUAGE, defaultLanguage)
+        return preferences.getString(SELECTED_LANGUAGE, defaultLanguage) //saving data
     }
 
     private fun persist(language: String?) {
@@ -62,6 +57,12 @@ object LocaleHelper {
         return context.createConfigurationContext(configuration)
     }
 
+    /**
+     * update the locale language and provide [ContextWrapper] class
+     * @param context Base context of the activity
+     * @param language in which you want to save
+     * @return [ContextWrapper]
+     */
     private fun updateResourcesLegacy(context: Context, language: String): Context {
         val locale = Locale(language)
         Locale.setDefault(locale)
@@ -73,7 +74,12 @@ object LocaleHelper {
         return context
     }
 
-
+    /**
+     * update the locale language and provide [ContextWrapper] class
+     * @param context Base context of the activity
+     * @param localeToSwitchTo in which you want to save
+     * @return [ContextWrapper]
+     */
     fun updateLocale(context: Context, localeToSwitchTo: Locale): ContextWrapper {
         var c = context
         val resources: Resources = c.resources

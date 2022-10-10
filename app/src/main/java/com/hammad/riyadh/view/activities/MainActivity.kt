@@ -36,13 +36,8 @@ class MainActivity : AppCompatActivity() {
         controller = host.navController
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
     override fun attachBaseContext(newBase: Context) {
-        val localeToSwitchTo = Locale("hi")
+        val localeToSwitchTo = Locale(LocaleHelper.getLanguage() ?: resources.getStringArray(R.array.language_code)[0])
         val localeUpdatedContext: ContextWrapper = updateLocale(newBase, localeToSwitchTo)
         super.attachBaseContext(localeUpdatedContext)
     }

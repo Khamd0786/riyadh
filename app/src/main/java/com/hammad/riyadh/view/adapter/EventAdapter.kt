@@ -3,7 +3,6 @@ package com.hammad.riyadh.view.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,18 +11,18 @@ import com.hammad.riyadh.databinding.ItemEventBinding
 import com.hammad.riyadh.models.Event
 import com.hammad.riyadh.utils.DateUtils
 
-class EventAdapter(private val context: Context) : ListAdapter<Event, EventAdapter.VH>(Comparator) {
+class EventAdapter(private var baseContext: Context) : ListAdapter<Event, EventAdapter.VH>(Comparator) {
 
     inner class VH(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Event) {
 
             binding.bottomHeader.apply {
                 tvPlace.text = item.placeName
-                tvName.text = context.resources.getString(item.name)
+                tvName.text = baseContext.resources.getString(item.name)
                 tvPriceRange.text = "$${item.priceFrom} - $${item.priceTo}"
             }
 
-            Glide.with(context).load(item.imageUrl).into(binding.image)
+            Glide.with(baseContext).load(item.imageUrl).into(binding.image)
 
             binding.containerDate.apply {
                 tvDateFrom.text = DateUtils.toNextLineDate(item.dateFrom)
@@ -32,7 +31,7 @@ class EventAdapter(private val context: Context) : ListAdapter<Event, EventAdapt
 
             binding.containerType.apply {
                 tvType.text = item.eventType
-                Glide.with(context).load(item.typeImage).into(ivImage)
+                Glide.with(baseContext).load(item.typeImage).into(ivImage)
             }
         }
     }
@@ -44,6 +43,11 @@ class EventAdapter(private val context: Context) : ListAdapter<Event, EventAdapt
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.bind(getItem(position))
+    }
+
+     fun setContent(baseContext: Context) {
+        this.baseContext = baseContext
+         notifyDataSetChanged()
     }
 
 
