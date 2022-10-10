@@ -23,7 +23,7 @@ class EventsViewModel @Inject constructor(private val coreRepository: CoreReposi
     fun loadEventsData(sortBy: String) {
         viewModelScope.launch {
             coreRepository.getEventsData()
-                .filter { it.eventType.lowercase().contains(sortBy) }
+                .filter { it.eventType.lowercase().contains(sortBy.lowercase()) }
                 .also {
                     Log.d("TAG", "loadEventsData: $it")
                     _eventShareFlow.emit(it)

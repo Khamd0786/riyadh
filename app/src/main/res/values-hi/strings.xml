@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">रियाद</string>
+
+    <string name="choose_language">भाषा चुनें</string>
+    <string name="english">अंग्रेज़ी</string>
+    <string name="hindi">हिन्दी</string>
+
+    <!--    headings-->
+    <string name="upcoming_events">आगामी कार्यक्रम</string>
+    <string name="today_events">आज के कार्यक्रम</string>
+
+
+    <!--    Event names-->
+    <string name="dynamo_magic_show">डायनमो मैजिक शो</string>
+    <string name="the_wizard_of_oz_show">द विजार्ड ऑफ ओज शो</string>
+    <string name="real_madrid_expo">रियल मैड्रिड एक्सपो</string>
+    <string name="the_master_of_illusions">भ्रम के मास्टर</string>
+
+
+    <!--Types-->
+    <string name="all">सभी</string>
+    <string name="magic">जादू</string>
+    <string name="tech">तकनीकी</string>
+    <string name="music">संगीत</string>
+
+</resources>

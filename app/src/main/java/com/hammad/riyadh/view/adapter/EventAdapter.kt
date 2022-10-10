@@ -1,35 +1,38 @@
 package com.hammad.riyadh.view.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hammad.riyadh.databinding.ItemEventBinding
 import com.hammad.riyadh.models.Event
+import com.hammad.riyadh.utils.DateUtils
 
-class EventAdapter : ListAdapter<Event, EventAdapter.VH>(Comparator) {
+class EventAdapter(private val context: Context) : ListAdapter<Event, EventAdapter.VH>(Comparator) {
 
     inner class VH(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Event) {
 
             binding.bottomHeader.apply {
                 tvPlace.text = item.placeName
-                tvName.text = item.name
+                tvName.text = context.resources.getString(item.name)
                 tvPriceRange.text = "$${item.priceFrom} - $${item.priceTo}"
             }
 
-            Glide.with(binding.root.context).load(item.imageUrl).into(binding.image)
+            Glide.with(context).load(item.imageUrl).into(binding.image)
 
             binding.containerDate.apply {
-                tvDateFrom.text = item.dateFrom
-                tvDateTo.text = item.dateTo
+                tvDateFrom.text = DateUtils.toNextLineDate(item.dateFrom)
+                tvDateTo.text = DateUtils.toNextLineDate(item.dateTo)
             }
 
             binding.containerType.apply {
                 tvType.text = item.eventType
-                Glide.with(root.context).load(item.typeImage).into(ivImage)
+                Glide.with(context).load(item.typeImage).into(ivImage)
             }
         }
     }

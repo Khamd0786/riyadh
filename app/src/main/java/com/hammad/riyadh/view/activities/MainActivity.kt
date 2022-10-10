@@ -1,13 +1,19 @@
 package com.hammad.riyadh.view.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.internal.ContextUtils
 import com.hammad.riyadh.R
 import com.hammad.riyadh.RiyadhApp
 import com.hammad.riyadh.databinding.ActivityMainBinding
-import com.hammad.riyadh.di.AppModule
+import com.hammad.riyadh.helper.LocaleHelper
+import com.hammad.riyadh.helper.LocaleHelper.updateLocale
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +39,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-
     }
+
+    override fun attachBaseContext(newBase: Context) {
+        val localeToSwitchTo = Locale("hi")
+        val localeUpdatedContext: ContextWrapper = updateLocale(newBase, localeToSwitchTo)
+        super.attachBaseContext(localeUpdatedContext)
+    }
+
+
 }
